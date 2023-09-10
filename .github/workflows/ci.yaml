@@ -16,7 +16,7 @@ jobs:
       - name: Upgrading yarn version
         run: yarn set version berry
       - name: Installing dependencies
-        run: yarn
+        run: yarn install --mode=skip-build
       - name: Building for production
         run: yarn rebuild
       - name: Upload artifact
