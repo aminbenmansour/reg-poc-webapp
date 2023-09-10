@@ -1,7 +1,7 @@
 name: CI
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on: 
-  push:
+  pull_request:
     branches: ['main']
 
   workflow_dispatch:
@@ -11,10 +11,12 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
       - name: Installing dependencies
-        uses: yarn
+        run: yarn
       - name: Building for production
-        uses: yarn build
+        run: yarn build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
