@@ -1,0 +1,29 @@
+name: CI
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+on: 
+  push:
+    branches: ['main']
+
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Installing dependencies
+        uses: yarn
+      - name: Building for production
+        uses: yarn build
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: './dist'
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
