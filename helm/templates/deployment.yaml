@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp
+  labels:
+    app: webapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webapp
+  template:
+    metadata:
+      labels:
+        app: webapp
+        version: v1
+    spec:
+      serviceAccountName: webapp
+      volumes:
+      - name: keri-data
+        persistentVolumeClaim:
+          claimName: keria-pvc
+      containers:
+      - name: webapp
+        image: aminbenmansour/webapp:1.0
+        ports:
+        - containerPort: 5173
+        env:
+        - name: API_SERVICE_URL
+          value: "http://server.default.svc.cluster.local"
+        - name: VERIFIER_SERVICE_URL
+          value: "http://verifier.default.svc.cluster.local"
+        - name: VITE_SIGNIFY_URL
+          value: http://localhost:3901
+        - name: VITE_SERVER_URL
+          value: "http://server.default.svc.cluster.local:8000"
